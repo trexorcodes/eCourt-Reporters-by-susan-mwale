@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - eCourt Reporters</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/users.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <a href="analytics.html" class="nav-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="collaboration.html" class="nav-link"><i class="fas fa-users"></i> Collaboration</a>
+                <a href="search.html" class="nav-link"><i class="fas fa-search"></i> Search</a>
+                <a href="users.html" class="nav-link active"><i class="fas fa-users-cog"></i> Users</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Users Header -->
+            <section class="users-header">
+                <div class="header-left">
+                    <h2><i class="fas fa-users-cog"></i> User Management</h2>
+                    <p>Manage team members, roles, and permissions</p>
+                </div>
+                <div class="users-actions">
+                    <button class="btn-secondary" onclick="exportUsers()">
+                        <i class="fas fa-download"></i> Export Users
+                    </button>
+                    <button class="btn-primary" onclick="showAddUserModal()">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+            </section>
+
+            <!-- Users Overview -->
+            <section class="users-overview">
+                <div class="overview-card total">
+                    <div class="overview-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <span class="overview-number">24</span>
+                    <span class="overview-label">Total Users</span>
+                </div>
+                <div class="overview-card active">
+                    <div class="overview-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <span class="overview-number">18</span>
+                    <span class="overview-label">Active Users</span>
+                </div>
+                <div class="overview-card pending">
+                    <div class="overview-icon">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <span class="overview-number">3</span>
+                    <span class="overview-label">Pending Invites</span>
+                </div>
+                <div class="overview-card admins">
+                    <div class="overview-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <span class="overview-number">4</span>
+                    <span class="overview-label">Administrators</span>
+                </div>
+            </section>
+
+            <!-- Users Management Layout -->
+            <div class="users-management">
+                <!-- Main Users List -->
+                <div class="users-list-container">
+                    <div class="users-list-header">
+                        <h3><i class="fas fa-list"></i> All Users</h3>
+                        <div class="users-search">
+                            <input type="text" placeholder="Search users..." id="usersSearch">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAllUsers">
+                                </th>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- User 1 -->
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="user-checkbox">
+                                </td>
+                                <td>
+                                    <div class="user-info-cell">
+                                        <div class="user-avatar-sm" style="background: #667eea;">JS</div>
+                                        <div class="user-details">
+                                            <div class="user-name">John Chiku</div>
+                                            <div class="user-email">john.chiku@courtreporter.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="role-badge role-admin">Administrator</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-active">Active</span>
+                                </td>
+                                <td>2 minutes ago</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <button class="action-btn" title="Edit User" onclick="editUser(1)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Profile" onclick="viewUser(1)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" title="Send Message" onclick="messageUser(1)">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 2 -->
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="user-checkbox">
+                                </td>
+                                <td>
+                                    <div class="user-info-cell">
+                                        <div class="user-avatar-sm" style="background: #10b981;">SC</div>
+                                        <div class="user-details">
+                                            <div class="user-name">Sarah Mwale</div>
+                                            <div class="user-email">sarah.mwale@courtreporter.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="role-badge role-editor">Editor</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-active">Active</span>
+                                </td>
+                                <td>15 minutes ago</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <button class="action-btn" title="Edit User" onclick="editUser(2)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Profile" onclick="viewUser(2)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" title="Send Message" onclick="messageUser(2)">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 3 -->
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="user-checkbox">
+                                </td>
+                                <td>
+                                    <div class="user-info-cell">
+                                        <div class="user-avatar-sm" style="background: #f59e0b;">MR</div>
+                                        <div class="user-details">
+                                            <div class="user-name">Mike mundia</div>
+                                            <div class="user-email">mike.mundia@courtreporter.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="role-badge role-reviewer">Reviewer</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-active">Active</span>
+                                </td>
+                                <td>1 hour ago</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <button class="action-btn" title="Edit User" onclick="editUser(3)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Profile" onclick="viewUser(3)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" title="Send Message" onclick="messageUser(3)">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 4 -->
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="user-checkbox">
+                                </td>
+                                <td>
+                                    <div class="user-info-cell">
+                                        <div class="user-avatar-sm" style="background: #3b82f6;">LP</div>
+                                        <div class="user-details">
+                                            <div class="user-name">Lisa kangwa</div>
+                                            <div class="user-email">lisa.kangwa@courtreporter.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="role-badge role-viewer">Viewer</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-inactive">Inactive</span>
+                                </td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <button class="action-btn" title="Edit User" onclick="editUser(4)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Profile" onclick="viewUser(4)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" title="Send Message" onclick="messageUser(4)">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- User 5 -->
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="user-checkbox">
+                                </td>
+                                <td>
+                                    <div class="user-info-cell">
+                                        <div class="user-avatar-sm" style="background: #8b5cf6;">AW</div>
+                                        <div class="user-details">
+                                            <div class="user-name">emmanuel trexor</div>
+                                            <div class="user-email">emmanuel@courtreporter.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="role-badge role-pending">Pending</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-pending">Invited</span>
+                                </td>
+                                <td>Invitation sent</td>
+                                <td>
+                                    <div class="user-actions">
+                                        <button class="action-btn" title="Resend Invite" onclick="resendInvite(5)">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button class="action-btn" title="Cancel Invite" onclick="cancelInvite(5)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Loading State -->
+                    <div class="users-loading" id="usersLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading users...</p>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="users-empty" id="usersEmpty" style="display: none;">
+                        <i class="fas fa-users"></i>
+                        <h3>No users found</h3>
+                        <p>Try adjusting your search criteria or add new users to get started.</p>
+                        <button class="btn-primary" onclick="showAddUserModal()">Add First User</button>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="users-pagination">
+                        <div class="pagination-info">
+                            Showing 1-5 of 24 users
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="pagination-pages">
+                                <span class="pagination-page active">1</span>
+                                <span class="pagination-page">2</span>
+                                <span class="pagination-page">3</span>
+                                <span class="pagination-page">4</span>
+                                <span class="pagination-page">5</span>
+                            </div>
+                            <button class="pagination-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Sidebar -->
+                <div class="users-sidebar">
+                    <!-- Quick Actions -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-header">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        </div>
+                        <div class="sidebar-content">
+                            <div class="quick-actions-list">
+                                <a href="#" class="quick-action" onclick="showAddUserModal()">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Add New User</span>
+                                </a>
+                                <a href="#" class="quick-action" onclick="showBulkInviteModal()">
+                                    <i class="fas fa-users"></i>
+                                    <span>Bulk Invite</span>
+                                </a>
+                                <a href="#" class="quick-action" onclick="showRoleManager()">
+                                    <i class="fas fa-user-tag"></i>
+                                    <span>Manage Roles</span>
+                                </a>
+                                <a href="#" class="quick-action" onclick="showPermissions()">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Permission Settings</span>
+                                </a>
+                                <a href="#" class="quick-action" onclick="exportUsers()">
+                                    <i class="fas fa-download"></i>
+                                    <span>Export User List</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role Distribution -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-header">
+                            <h3><i class="fas fa-chart-pie"></i> Role Distribution</h3>
+                        </div>
+                        <div class="sidebar-content">
+                            <div class="role-stats">
+                                <div class="role-stat">
+                                    <div class="role-info">
+                                        <span class="role-color admin"></span>
+                                        <span class="role-name">Administrators</span>
+                                    </div>
+                                    <span class="role-count">4</span>
+                                </div>
+                                <div class="role-stat">
+                                    <div class="role-info">
+                                        <span class="role-color editor"></span>
+                                        <span class="role-name">Editors</span>
+                                    </div>
+                                    <span class="role-count">8</span>
+                                </div>
+                                <div class="role-stat">
+                                    <div class="role-info">
+                                        <span class="role-color reviewer"></span>
+                                        <span class="role-name">Reviewers</span>
+                                    </div>
+                                    <span class="role-count">6</span>
+                                </div>
+                                <div class="role-stat">
+                                    <div class="role-info">
+                                        <span class="role-color viewer"></span>
+                                        <span class="role-name">Viewers</span>
+                                    </div>
+                                    <span class="role-count">6</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-header">
+                            <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                        </div>
+                        <div class="sidebar-content">
+                            <div class="activity-feed">
+                                <div class="activity-item">
+                                    <div class="activity-avatar" style="background: #667eea;">JS</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>John Smith</strong> updated user permissions
+                                        </div>
+                                        <div class="activity-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-avatar" style="background: #10b981;">SC</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Sarah Chen</strong> invited new user
+                                        </div>
+                                        <div class="activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-avatar" style="background: #f59e0b;">MR</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Mike Rodriguez</strong> changed user role
+                                        </div>
+                                        <div class="activity-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-avatar" style="background: #3b82f6;">LP</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Lisa Park</strong> deactivated user account
+                                        </div>
+                                        <div class="activity-time">1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div class="modal user-modal" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="user-form" id="addUserForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="role">User Role</label>
+                            <select id="role" required>
+                                <option value="">Select Role</option>
+                                <option value="viewer">Viewer</option>
+                                <option value="reviewer">Reviewer</option>
+                                <option value="editor">Editor</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="team">Assign to Team</label>
+                            <select id="team">
+                                <option value="">No Team</option>
+                                <option value="criminal">Criminal Division</option>
+                                <option value="civil">Civil Division</option>
+                                <option value="family">Family Court</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="welcomeMessage">Welcome Message (Optional)</label>
+                        <textarea id="welcomeMessage" rows="3" placeholder="Add a personal welcome message for the new user..."></textarea>
+                    </div>
+                    <div class="role-permissions">
+                        <h4>Role Permissions</h4>
+                        <div class="permissions-list">
+                            <div class="permission-tag">
+                                <i class="fas fa-check"></i>
+                                <span>View Transcripts</span>
+                            </div>
+                            <div class="permission-tag">
+                                <i class="fas fa-check"></i>
+                                <span>Create Transcripts</span>
+                            </div>
+                            <div class="permission-tag">
+                                <i class="fas fa-check"></i>
+                                <span>Edit Transcripts</span>
+                            </div>
+                            <div class="permission-tag">
+                                <i class="fas fa-times"></i>
+                                <span>Delete Transcripts</span>
+                            </div>
+                            <div class="permission-tag">
+                                <i class="fas fa-times"></i>
+                                <span>Manage Users</span>
+                            </div>
+                            <div class="permission-tag">
+                                <i class="fas fa-times"></i>
+                                <span>System Settings</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('addUserModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Send Invitation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal user-modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit User</h3>
+                <button class="modal-close" onclick="closeModal('editUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Edit form would be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/users.js"></script>
+</body>
+</html>

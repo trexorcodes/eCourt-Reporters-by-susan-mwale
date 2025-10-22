@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration - eCourt Reporters</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/transcription.css">
+    <link rel="stylesheet" href="../css/collaboration.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <a href="analytics.html" class="nav-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="collaboration.html" class="nav-link active"><i class="fas fa-users"></i> Collaboration</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Collaboration Header -->
+            <section class="collaboration-header">
+                <div class="header-left">
+                    <h2><i class="fas fa-users"></i> Collaborative Editing</h2>
+                    <p>Working on: <strong>CR-2024-018 - Susan vs. Sunday</strong></p>
+                </div>
+                <div class="collaboration-actions">
+                    <div class="presence-indicators">
+                        <div class="presence-avatar active" title="You" style="background: #667eea;">Y</div>
+                        <div class="presence-avatar active" title="Sarah Chen" style="background: #10b981;">S</div>
+                        <div class="presence-avatar active" title="Mike Rodriguez" style="background: #f59e0b;">M</div>
+                        <div class="presence-avatar" title="Lisa Park" style="background: #3b82f6;">L</div>
+                    </div>
+                    <button class="btn-secondary" onclick="showInviteModal()">
+                        <i class="fas fa-user-plus"></i> Invite People
+                    </button>
+                    <button class="btn-primary" onclick="startLiveSession()">
+                        <i class="fas fa-broadcast-tower"></i> Start Live Session
+                    </button>
+                </div>
+            </section>
+
+            <!-- Collaboration Layout -->
+            <div class="collaboration-layout">
+                <!-- Main Editor Column -->
+                <div class="editor-column">
+                    <!-- Enhanced Toolbar with Collaboration Features -->
+                    <section class="toolbar-section">
+                        <div class="toolbar-primary">
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="formatBlock" data-value="p" title="Paragraph">
+                                    <i class="fas fa-paragraph"></i>
+                                </button>
+                                <button class="tool-btn" data-command="bold" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="tool-btn" data-command="italic" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="tool-btn" id="btn-speaker" title="Add Speaker">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                                <button class="tool-btn" id="btn-timestamp" title="Insert Timestamp">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="tool-btn" id="btn-comment" title="Add Comment">
+                                    <i class="fas fa-comment"></i>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="tool-btn" id="btn-suggestions" title="Suggestions Mode">
+                                    <i class="fas fa-lightbulb"></i> Suggest
+                                </button>
+                                <button class="tool-btn" id="btn-track-changes" title="Track Changes">
+                                    <i class="fas fa-code-branch"></i> Track
+                                </button>
+                            </div>
+                        </div>
+                        <div class="toolbar-secondary">
+                            <span class="collab-status">
+                                <i class="fas fa-circle" style="color: #10b981;"></i>
+                                <span>3 people online</span>
+                            </span>
+                            <button class="tool-btn" id="btn-version-history" title="Version History">
+                                <i class="fas fa-history"></i> History
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Collaborative Editor -->
+                    <section class="editor-section">
+                        <div class="editor-container">
+                            <div class="editor-rich" id="collabEditor" contenteditable="true">
+                                <p class="speaker-entry">
+                                    <span class="speaker">CLERK:</span> All rise! The Court of Common Pleas is now in session. The Honorable Judge Smith presiding.
+                                </p>
+                                <p class="speaker-entry">
+                                    <span class="speaker">JUDGE SMITH:</span> Please be seated. The clerk will call the first case.
+                                    <span class="comment-marker" data-comment="comment1">
+                                        <i class="fas fa-comment"></i>
+                                    </span>
+                                </p>
+                                <p class="speaker-entry suggested">
+                                    <span class="suggestion-marker">Suggested by Sarah Chen:</span>
+                                    <span class="speaker">CLERK:</span> Calling case number CR-2024-018, State versus Johnson.
+                                </p>
+                                <p class="speaker-entry">
+                                    <span class="speaker">PROSECUTOR:</span> The prosecution is ready, Your Honor.
+                                </p>
+                                <p class="speaker-entry">
+                                    <span class="speaker">DEFENSE:</span> The defense is ready, Your Honor.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Editor Status Bar with Collaboration Info -->
+                        <div class="editor-statusbar">
+                            <div class="status-left">
+                                <span class="collab-mode">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <span>Editing</span>
+                                </span>
+                                <span class="live-indicator">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                    <span>Live</span>
+                                </span>
+                            </div>
+                            <div class="status-right">
+                                <span>Words: <strong>127</strong></span>
+                                <span>Changes: <strong>3</strong></span>
+                                <span>Last save: <strong>Just now</strong></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Action Buttons -->
+                    <section class="action-section">
+                        <div class="action-buttons">
+                            <button class="btn-secondary" onclick="saveVersion()">
+                                <i class="fas fa-code-branch"></i> Save Version
+                            </button>
+                            <button class="btn-primary" onclick="submitForReview()">
+                                <i class="fas fa-check-circle"></i> Submit for Review
+                            </button>
+                            <button class="btn-outline" onclick="compareVersions()">
+                                <i class="fas fa-exchange-alt"></i> Compare Versions
+                            </button>
+                            <button class="btn-danger" onclick="exitCollaboration()">
+                                <i class="fas fa-sign-out-alt"></i> Exit Collaboration
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Collaboration Sidebar -->
+                <div class="collaboration-panel">
+                    <div class="panel-tabs">
+                        <button class="panel-tab active" data-tab="participants">
+                            <i class="fas fa-users"></i> Participants
+                        </button>
+                        <button class="panel-tab" data-tab="comments">
+                            <i class="fas fa-comments"></i> Comments
+                        </button>
+                        <button class="panel-tab" data-tab="versions">
+                            <i class="fas fa-history"></i> Versions
+                        </button>
+                    </div>
+
+                    <div class="panel-content">
+                        <!-- Participants Tab -->
+                        <div class="tab-content active" id="participants-tab">
+                            <div class="users-list">
+                                <div class="user-item">
+                                    <div class="user-avatar" style="background: #667eea;">Y</div>
+                                    <div class="user-info">
+                                        <div class="user-name">You</div>
+                                        <div class="user-role">Owner</div>
+                                        <div class="user-status">
+                                            <span class="status-indicator status-online"></span>
+                                            <span>Editing</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="btn-sm" title="Send message">
+                                            <i class="fas fa-comment"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="user-item">
+                                    <div class="user-avatar" style="background: #10b981;">S</div>
+                                    <div class="user-info">
+                                        <div class="user-name">Sarah Kabwe</div>
+                                        <div class="user-role">Reviewer</div>
+                                        <div class="user-status">
+                                            <span class="status-indicator status-online"></span>
+                                            <span>Reviewing</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="btn-sm" title="Send message">
+                                            <i class="fas fa-comment"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="user-item">
+                                    <div class="user-avatar" style="background: #f59e0b;">M</div>
+                                    <div class="user-info">
+                                        <div class="user-name">Mike Chewe</div>
+                                        <div class="user-role">Editor</div>
+                                        <div class="user-status">
+                                            <span class="status-indicator status-online"></span>
+                                            <span>Suggesting</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="btn-sm" title="Send message">
+                                            <i class="fas fa-comment"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="user-item">
+                                    <div class="user-avatar" style="background: #3b82f6;">L</div>
+                                    <div class="user-info">
+                                        <div class="user-name">Lisa Pankwe</div>
+                                        <div class="user-role">Viewer</div>
+                                        <div class="user-status">
+                                            <span class="status-indicator status-offline"></span>
+                                            <span>Last seen 2h ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="btn-sm" title="Send message">
+                                            <i class="fas fa-comment"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments Tab -->
+                        <div class="tab-content" id="comments-tab">
+                            <div class="comments-section">
+                                <div class="comment-item">
+                                    <div class="comment-header">
+                                        <div class="comment-author">
+                                            <div class="user-avatar" style="background: #10b981; width: 24px; height: 24px; font-size: 0.7rem;">S</div>
+                                            Sarah Chen
+                                        </div>
+                                        <span class="comment-time">2 minutes ago</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        Should we include the time the court was called to order?
+                                    </div>
+                                    <div class="comment-actions">
+                                        <button class="comment-action">Reply</button>
+                                        <button class="comment-action">Resolve</button>
+                                    </div>
+                                </div>
+                                <div class="comment-item">
+                                    <div class="comment-header">
+                                        <div class="comment-author">
+                                            <div class="user-avatar" style="background: #f59e0b; width: 24px; height: 24px; font-size: 0.7rem;">M</div>
+                                            Susan Mwale
+                                        </div>
+                                        <span class="comment-time">5 minutes ago</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        I suggest we standardize on "JUDGE:" prefix for all judge statements for consistency.
+                                    </div>
+                                    <div class="comment-actions">
+                                        <button class="comment-action">Reply</button>
+                                        <button class="comment-action">Resolve</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-input">
+                                <textarea placeholder="Add a comment..."></textarea>
+                                <div class="comment-input-actions">
+                                    <div class="comment-tools">
+                                        <button class="comment-tool" title="Formatting">
+                                            <i class="fas fa-bold"></i>
+                                        </button>
+                                        <button class="comment-tool" title="Mention someone">
+                                            <i class="fas fa-at"></i>
+                                        </button>
+                                    </div>
+                                    <button class="btn-primary">Comment</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Versions Tab -->
+                        <div class="tab-content" id="versions-tab">
+                            <div class="versions-list">
+                                <div class="version-item current">
+                                    <div class="version-icon">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                    <div class="version-content">
+                                        <div class="version-title">Current Version</div>
+                                        <div class="version-meta">
+                                            <span>Just now</span>
+                                            <span>You</span>
+                                            <span>127 words</span>
+                                        </div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <button class="btn-sm" title="View changes">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="version-item">
+                                    <div class="version-icon">
+                                        <i class="fas fa-save"></i>
+                                    </div>
+                                    <div class="version-content">
+                                        <div class="version-title">Version 3</div>
+                                        <div class="version-meta">
+                                            <span>1 hour ago</span>
+                                            <span>Sarah Chembo</span>
+                                            <span>118 words</span>
+                                        </div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <button class="btn-sm" title="Restore this version">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                        <button class="btn-sm" title="View changes">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="version-item">
+                                    <div class="version-icon">
+                                        <i class="fas fa-save"></i>
+                                    </div>
+                                    <div class="version-content">
+                                        <div class="version-title">Version 2</div>
+                                        <div class="version-meta">
+                                            <span>2 hours ago</span>
+                                            <span>Susan Mwale</span>
+                                            <span>105 words</span>
+                                        </div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <button class="btn-sm" title="Restore this version">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                        <button class="btn-sm" title="View changes">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="version-item">
+                                    <div class="version-icon">
+                                        <i class="fas fa-save"></i>
+                                    </div>
+                                    <div class="version-content">
+                                        <div class="version-title">Version 1</div>
+                                        <div class="version-meta">
+                                            <span>3 hours ago</span>
+                                            <span>You</span>
+                                            <span>89 words</span>
+                                        </div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <button class="btn-sm" title="Restore this version">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                        <button class="btn-sm" title="View changes">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Live Changes Indicator -->
+    <div class="live-changes" id="liveChanges">
+        <i class="fas fa-sync-alt fa-spin"></i>
+        <span>Sarah Chen is editing...</span>
+    </div>
+
+    <!-- Invite Modal -->
+    <div class="modal collaboration-modal" id="inviteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Invite Collaborators</h3>
+                <button class="modal-close" onclick="closeModal('inviteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="invite-section">
+                    <h4>Invite by Email</h4>
+                    <div class="invite-input-group">
+                        <input type="email" class="invite-input" placeholder="Enter email address">
+                        <select class="permission-select">
+                            <option value="view">Can view</option>
+                            <option value="comment">Can comment</option>
+                            <option value="edit">Can edit</option>
+                            <option value="review">Reviewer</option>
+                        </select>
+                        <button class="btn-primary">Send Invite</button>
+                    </div>
+                </div>
+                <div class="pending-invites">
+                    <h4>Pending Invitations</h4>
+                    <div class="invite-item">
+                        <span class="invite-email">susanmwale@courtreporter.com</span>
+                        <span class="invite-status pending">Pending</span>
+                    </div>
+                    <div class="invite-item">
+                        <span class="invite-email">susan.mwale@legal.org</span>
+                        <span class="invite-status accepted">Accepted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Compare Modal -->
+    <div class="modal collaboration-modal" id="compareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Compare Versions</h3>
+                <button class="modal-close" onclick="closeModal('compareModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="version-comparison">
+                    <div class="comparison-header">
+                        <div class="version-select">
+                            <select>
+                                <option>Version 3 (1 hour ago)</option>
+                                <option>Version 2 (2 hours ago)</option>
+                                <option>Version 1 (3 hours ago)</option>
+                            </select>
+                        </div>
+                        <div class="comparison-vs">vs</div>
+                        <div class="version-select">
+                            <select>
+                                <option>Current Version</option>
+                                <option>Version 3 (1 hour ago)</option>
+                                <option>Version 2 (2 hours ago)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="comparison-content">
+                        <div class="diff-viewer">
+                            <div class="diff-line added">
+                                <span class="diff-marker">+</span>
+                                <span class="diff-text">MWILA KUNDA: Please be seated. The clerk will call the first case.</span>
+                            </div>
+                            <div class="diff-line unchanged">
+                                <span class="diff-marker">&nbsp;</span>
+                                <span class="diff-text">CLERK: Calling case number CR-2024-018, State versus Johnson.</span>
+                            </div>
+                            <div class="diff-line removed">
+                                <span class="diff-marker">-</span>
+                                <span class="diff-text">CLERK: Case number CR-2024-018, State vs Johnson.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-actions">
+                        <button class="btn-secondary" onclick="closeModal('compareModal')">Close</button>
+                        <button class="btn-primary" onclick="restoreVersion()">Restore This Version</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/collaboration.js"></script>
+</body>
+</html>

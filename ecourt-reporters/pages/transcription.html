@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Transcription - eCourt Reporters</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/transcription.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link active"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <div class="editor-status">
+                    <span class="status-indicator" id="connectionStatus">
+                        <i class="fas fa-wifi"></i> Online
+                    </span>
+                    <span class="status-indicator" id="autoSaveStatus">
+                        <i class="fas fa-save"></i> All changes saved
+                    </span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Editor Header -->
+            <section class="editor-header">
+                <div class="header-left">
+                    <h2><i class="fas fa-edit"></i> Transcription Editor</h2>
+                    <div class="session-info">
+                        <span class="session-timer">
+                            <i class="fas fa-clock"></i>
+                            <span id="sessionTimer">00:00:00</span>
+                        </span>
+                        <span class="word-count">
+                            <i class="fas fa-file-word"></i>
+                            <span id="wordCount">0</span> words
+                        </span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="editor-mode">
+                        <button class="mode-btn active" data-mode="rich">Rich Text</button>
+                        <button class="mode-btn" data-mode="markdown">Markdown</button>
+                    </div>
+                    <button class="btn-primary" id="voiceControl">
+                        <i class="fas fa-microphone"></i>
+                        <span>Start Dictation</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Case Information Panel -->
+            <section class="case-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-info-circle"></i> Case Details</h3>
+                    <button class="panel-toggle" id="casePanelToggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <div class="case-grid">
+                        <div class="case-input-group">
+                            <label for="caseNumber"><i class="fas fa-hashtag"></i> Case Number</label>
+                            <input type="text" id="caseNumber" placeholder="CR-2024-001" value="CR-2024-018">
+                        </div>
+                        <div class="case-input-group">
+                            <label for="caseTitle"><i class="fas fa-gavel"></i> Case Title</label>
+                            <input type="text" id="caseTitle" placeholder="State vs. Defendant">
+                        </div>
+                        <div class="case-input-group">
+                            <label for="hearingDate"><i class="fas fa-calendar"></i> Hearing Date</label>
+                            <input type="date" id="hearingDate">
+                        </div>
+                        <div class="case-input-group">
+                            <label for="judgeName"><i class="fas fa-user-tie"></i> Presiding Judge</label>
+                            <input type="text" id="judgeName" placeholder="Hon. Judge Name">
+                        </div>
+                        <div class="case-input-group">
+                            <label for="courtroom"><i class="fas fa-building"></i> Courtroom</label>
+                            <input type="text" id="courtroom" placeholder="Courtroom 4B">
+                        </div>
+                        <div class="case-input-group">
+                            <label for="caseType"><i class="fas fa-balance-scale"></i> Case Type</label>
+                            <select id="caseType">
+                                <option value="criminal">Criminal</option>
+                                <option value="civil">Civil</option>
+                                <option value="family">Family</option>
+                                <option value="probate">Probate</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two Column Layout -->
+            <div class="editor-layout">
+                <!-- Main Editor Column -->
+                <div class="editor-column">
+                    <!-- Enhanced Toolbar -->
+                    <section class="toolbar-section">
+                        <div class="toolbar-primary">
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="formatBlock" data-value="p" title="Paragraph">
+                                    <i class="fas fa-paragraph"></i>
+                                </button>
+                                <button class="tool-btn" data-command="formatBlock" data-value="h2" title="Heading 2">
+                                    <i class="fas fa-heading"></i>2
+                                </button>
+                                <button class="tool-btn" data-command="formatBlock" data-value="h3" title="Heading 3">
+                                    <i class="fas fa-heading"></i>3
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="bold" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="tool-btn" data-command="italic" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button class="tool-btn" data-command="underline" title="Underline">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="insertUnorderedList" title="Bullet List">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                                <button class="tool-btn" data-command="insertOrderedList" title="Numbered List">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="tool-btn" id="btn-speaker" title="Add Speaker">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                                <button class="tool-btn" id="btn-timestamp" title="Insert Timestamp">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="tool-btn" id="btn-objection" title="Insert Objection">
+                                    <i class="fas fa-gavel"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="toolbar-secondary">
+                            <button class="tool-btn" id="btn-ai-assist" title="AI Suggestions">
+                                <i class="fas fa-robot"></i> AI Assist
+                            </button>
+                            <button class="tool-btn" id="btn-fullscreen" title="Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Advanced Editor -->
+                    <section class="editor-section">
+                        <div class="editor-container">
+                            <!-- Rich Text Editor -->
+                            <div class="editor-rich" id="richEditor" contenteditable="true">
+                                <p class="speaker-entry">
+                                    <span class="speaker">CLERK:</span> All rise! The Court of Common Pleas is now in session. The Honorable Judge Smith presiding.
+                                </p>
+                                <p class="speaker-entry">
+                                    <span class="speaker">JUDGE SMITH:</span> Please be seated. The clerk will call the first case.
+                                </p>
+                                <p class="speaker-entry">
+                                    <span class="speaker">CLERK:</span> Calling case number CR-2024-018, State versus Johnson.
+                                </p>
+                            </div>
+
+                            <!-- Markdown Editor (Hidden by default) -->
+                            <textarea class="editor-markdown" id="markdownEditor" style="display: none;" placeholder="# Court Proceedings
+
+Start typing your transcript in Markdown format...
+
+**CLERK:** All rise! The Court is now in session.
+**JUDGE:** Please be seated."></textarea>
+                        </div>
+
+                        <!-- Voice Dictation Panel -->
+                        <div class="voice-panel" id="voicePanel">
+                            <div class="voice-header">
+                                <i class="fas fa-microphone"></i>
+                                <span>Voice Dictation Active</span>
+                                <button class="voice-stop" id="voiceStop">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                            </div>
+                            <div class="voice-output" id="voiceOutput">
+                                <p>Speak now... Your speech will appear here.</p>
+                            </div>
+                            <div class="voice-controls">
+                                <div class="voice-visualizer" id="voiceVisualizer">
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Editor Status Bar -->
+                        <div class="editor-statusbar">
+                            <div class="status-left">
+                                <span class="language-selector">
+                                    <select id="languageSelect">
+                                        <option value="en-US">English (US)</option>
+                                        <option value="en-GB">English (UK)</option>
+                                        <option value="es-ES">Spanish</option>
+                                        <option value="fr-FR">French</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <div class="status-right">
+                                <span>Words: <strong id="wordCountDisplay">0</strong></span>
+                                <span>Characters: <strong id="charCountDisplay">0</strong></span>
+                                <span>Reading Time: <strong id="readingTime">0min</strong></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Action Buttons -->
+                    <section class="action-section">
+                        <div class="action-buttons">
+                            <button class="btn-secondary" id="btn-save-draft">
+                                <i class="fas fa-save"></i> Save Draft
+                            </button>
+                            <button class="btn-primary" id="btn-save-final">
+                                <i class="fas fa-check-circle"></i> Save Final Transcript
+                            </button>
+                            <button class="btn-outline" id="btn-export">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn-danger" id="btn-clear">
+                                <i class="fas fa-trash"></i> Clear All
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar Column -->
+                <div class="sidebar-column">
+                    <!-- Quick Templates -->
+                    <section class="sidebar-panel">
+                        <div class="panel-header">
+                            <h4><i class="fas fa-layer-group"></i> Quick Templates</h4>
+                        </div>
+                        <div class="panel-content">
+                            <div class="template-grid">
+                                <button class="template-btn" data-template="opening">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Court Opening</span>
+                                </button>
+                                <button class="template-btn" data-template="witness">
+                                    <i class="fas fa-hand-paper"></i>
+                                    <span>Witness Oath</span>
+                                </button>
+                                <button class="template-btn" data-template="objection">
+                                    <i class="fas fa-gavel"></i>
+                                    <span>Objection</span>
+                                </button>
+                                <button class="template-btn" data-template="closing">
+                                    <i class="fas fa-door-closed"></i>
+                                    <span>Court Closing</span>
+                                </button>
+                                <button class="template-btn" data-template="jury">
+                                    <i class="fas fa-users"></i>
+                                    <span>Jury Instructions</span>
+                                </button>
+                                <button class="template-btn" data-template="exhibit">
+                                    <i class="fas fa-file-image"></i>
+                                    <span>Exhibit Marking</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AI Suggestions Panel -->
+                    <section class="sidebar-panel">
+                        <div class="panel-header">
+                            <h4><i class="fas fa-robot"></i> AI Assistant</h4>
+                            <button class="btn-sm" id="btn-refresh-ai">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="panel-content">
+                            <div class="ai-suggestions">
+                                <div class="ai-suggestion">
+                                    <p>Consider adding timestamps for each speaker change</p>
+                                    <button class="btn-sm">Apply</button>
+                                </div>
+                                <div class="ai-suggestion">
+                                    <p>Format consistency: Use "JUDGE:" prefix for all judge statements</p>
+                                    <button class="btn-sm">Apply</button>
+                                </div>
+                                <div class="ai-suggestion">
+                                    <p>Potential spelling: "defendant" instead of "defendent"</p>
+                                    <button class="btn-sm">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Document Outline -->
+                    <section class="sidebar-panel">
+                        <div class="panel-header">
+                            <h4><i class="fas fa-sitemap"></i> Document Outline</h4>
+                        </div>
+                        <div class="panel-content">
+                            <div class="outline-list" id="outlineList">
+                                <div class="outline-item">
+                                    <i class="fas fa-hashtag"></i>
+                                    <span>Case CR-2024-018</span>
+                                </div>
+                                <div class="outline-item">
+                                    <i class="fas fa-user"></i>
+                                    <span>Opening Statements</span>
+                                </div>
+                                <div class="outline-item">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Witness Testimony</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Transcript</h3>
+                <button class="modal-close" onclick="closeModal('exportModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-option">
+                        <input type="radio" id="export-pdf" name="export-format" value="pdf" checked>
+                        <label for="export-pdf">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF Document</span>
+                            <small>Best for printing and sharing</small>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <input type="radio" id="export-docx" name="export-format" value="docx">
+                        <label for="export-docx">
+                            <i class="fas fa-file-word"></i>
+                            <span>Word Document</span>
+                            <small>Editable format</small>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <input type="radio" id="export-txt" name="export-format" value="txt">
+                        <label for="export-txt">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Plain Text</span>
+                            <small>Simple text format</small>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <input type="radio" id="export-html" name="export-format" value="html">
+                        <label for="export-html">
+                            <i class="fas fa-code"></i>
+                            <span>HTML</span>
+                            <small>Web format</small>
+                        </label>
+                    </div>
+                </div>
+                <div class="export-actions">
+                    <button class="btn-secondary" onclick="closeModal('exportModal')">Cancel</button>
+                    <button class="btn-primary" onclick="exportTranscript()">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Modal -->
+    <div class="modal" id="aiModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                <button class="modal-close" onclick="closeModal('aiModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ai-chat">
+                    <div class="ai-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I can help you with:</p>
+                            <ul>
+                                <li>Formatting suggestions</li>
+                                <li>Grammar and spelling checks</li>
+                                <li>Legal terminology</li>
+                                <li>Template insertion</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-input">
+                    <input type="text" placeholder="Ask me anything about your transcript...">
+                    <button class="btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="notificationToast">
+        <div class="toast-content">
+            <i class="fas fa-bell"></i>
+            <span id="toastMessage">Notification message</span>
+        </div>
+        <button class="toast-close" onclick="hideToast()">&times;</button>
+    </div>
+
+    <script src="../js/transcription.js"></script>
+</body>
+</html>

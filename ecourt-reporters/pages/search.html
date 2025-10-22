@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search - eCourt Reporters</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <a href="analytics.html" class="nav-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="collaboration.html" class="nav-link"><i class="fas fa-users"></i> Collaboration</a>
+                <a href="search.html" class="nav-link active"><i class="fas fa-search"></i> Search</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Search Header -->
+            <section class="search-header">
+                <div class="header-left">
+                    <h2><i class="fas fa-search"></i> Advanced Search</h2>
+                    <p>Find transcripts, cases, and content across your entire repository</p>
+                </div>
+                <div class="search-actions">
+                    <button class="btn-secondary" onclick="saveSearch()">
+                        <i class="fas fa-bookmark"></i> Save Search
+                    </button>
+                    <button class="btn-primary" onclick="exportResults()">
+                        <i class="fas fa-download"></i> Export Results
+                    </button>
+                </div>
+            </section>
+
+            <!-- Advanced Search Bar -->
+            <section class="advanced-search">
+                <div class="search-bar">
+                    <div class="search-input">
+                        <input type="text" id="searchQuery" placeholder="Search transcripts, case numbers, keywords..." value="objection hearing">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="search-suggestions" id="searchSuggestions">
+                            <div class="suggestion-item">
+                                <div class="suggestion-query">objection hearing</div>
+                                <div class="suggestion-type">Recent search</div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="suggestion-query">objection sustained</div>
+                                <div class="suggestion-type">Common phrase</div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="suggestion-query">objection overruled</div>
+                                <div class="suggestion-type">Common phrase</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="search-filters-toggle" onclick="toggleFilters()">
+                        <i class="fas fa-filter"></i>
+                        <span>Filters</span>
+                        <span class="filter-count">3</span>
+                    </button>
+                    <button class="btn-primary" onclick="performSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="advanced-filters" id="advancedFilters">
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="caseType"><i class="fas fa-balance-scale"></i> Case Type</label>
+                            <select id="caseType">
+                                <option value="">All Types</option>
+                                <option value="criminal">Criminal</option>
+                                <option value="civil">Civil</option>
+                                <option value="family">Family</option>
+                                <option value="probate">Probate</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="status"><i class="fas fa-tasks"></i> Status</label>
+                            <select id="status">
+                                <option value="">All Statuses</option>
+                                <option value="completed">Completed</option>
+                                <option value="draft">Draft</option>
+                                <option value="pending">Pending Review</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="dateFrom"><i class="fas fa-calendar"></i> Date Range</label>
+                            <div class="date-range">
+                                <input type="date" id="dateFrom" placeholder="From">
+                                <span>to</span>
+                                <input type="date" id="dateTo" placeholder="To">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label for="judge"><i class="fas fa-user-tie"></i> Judge</label>
+                            <select id="judge">
+                                <option value="">All Judges</option>
+                                <option value="smith">Hon. Mwila</option>
+                                <option value="johnson">Hon. Judge Kunda</option>
+                                <option value="williams">Hon. Judge William</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="wordCount"><i class="fas fa-file-word"></i> Word Count</label>
+                            <select id="wordCount">
+                                <option value="">Any Length</option>
+                                <option value="0-500">0-500 words</option>
+                                <option value="501-1000">501-1,000 words</option>
+                                <option value="1001-2000">1,001-2,000 words</option>
+                                <option value="2000+">2,000+ words</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="assignedTo"><i class="fas fa-user"></i> Assigned To</label>
+                            <select id="assignedTo">
+                                <option value="">Anyone</option>
+                                <option value="me">Me</option>
+                                <option value="team">My Team</option>
+                                <option value="specific">Specific User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <div class="filter-stats">
+                            <span id="activeFilters">3 active filters</span>
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="btn-secondary" onclick="clearFilters()">
+                                Clear All
+                            </button>
+                            <button class="btn-primary" onclick="applyFilters()">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions Bar -->
+            <section class="quick-actions-bar">
+                <div class="bulk-actions">
+                    <div class="bulk-select">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll">Select all 24 results</label>
+                    </div>
+                    <div class="bulk-buttons">
+                        <button class="btn-secondary" onclick="bulkExport()">
+                            <i class="fas fa-download"></i> Export Selected
+                        </button>
+                        <button class="btn-secondary" onclick="bulkArchive()">
+                            <i class="fas fa-archive"></i> Archive
+                        </button>
+                        <button class="btn-danger" onclick="bulkDelete()">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-option" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-option" data-view="timeline">
+                        <i class="fas fa-stream"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Search Results -->
+            <section class="search-results">
+                <div class="results-header">
+                    <div class="results-count">
+                        <span id="resultsCount">24</span> results found for "<span id="searchTerm">objection hearing</span>"
+                    </div>
+                    <div class="results-sort">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy">
+                            <option value="relevance">Relevance</option>
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="title">Title A-Z</option>
+                            <option value="wordcount">Word Count</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Result Card 1 -->
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <div class="result-title">CR-2024-015 - Benson vs. John</div>
+                                <div class="result-badge badge-completed">Completed</div>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-sm" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-sm" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm" title="Share">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>Hearing Date: Jan 15, 2024</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Judge: Hon. Kunda</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-file-word"></i>
+                                <span>1,245 words • 45 min read</span>
+                            </div>
+                        </div>
+                        <div class="result-preview">
+                            During the preliminary hearing, the defense raised an <span class="highlight">objection</span> regarding the evidence collection process. The <span class="highlight">hearing</span> was adjourned to review the motion...
+                        </div>
+                    </div>
+
+                    <!-- Result Card 2 -->
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <div class="result-title">CR-2024-018 - Susan vs. William</div>
+                                <div class="result-badge badge-draft">Draft</div>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-sm" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-sm" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm" title="Share">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>Hearing Date: Jan 18, 2024</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Judge: Hon. Mwila</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-file-word"></i>
+                                <span>890 words • 30 min read</span>
+                            </div>
+                        </div>
+                        <div class="result-preview">
+                            The <span class="highlight">hearing</span> focused on the admissibility of witness testimony. Multiple <span class="highlight">objection</span>s were sustained throughout the proceedings, particularly regarding hearsay...
+                        </div>
+                    </div>
+
+                    <!-- Result Card 3 -->
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <div class="result-title">CV-2024-007 - Siwale vs. kangwa</div>
+                                <div class="result-badge badge-completed">Completed</div>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-sm" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-sm" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm" title="Share">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>Hearing Date: Jan 12, 2024</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Judge: Hon. Mundia</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <i class="fas fa-file-word"></i>
+                                <span>2,134 words • 1h 15min read</span>
+                            </div>
+                        </div>
+                        <div class="result-preview">
+                            In this civil <span class="highlight">hearing</span>, the plaintiff's counsel filed an <span class="highlight">objection</span> to the defendant's motion for summary judgment. The court heard arguments from both sides...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="search-loading" id="searchLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Searching transcripts...</p>
+                </div>
+
+                <!-- No Results State -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>No results found</h3>
+                    <p>Try adjusting your search terms or filters to find what you're looking for.</p>
+                    <button class="btn-primary" onclick="clearFilters()">Clear All Filters</button>
+                </div>
+            </section>
+
+            <!-- Saved Searches -->
+            <section class="saved-searches">
+                <h3><i class="fas fa-bookmark"></i> Saved Searches</h3>
+                <div class="saved-search-list">
+                    <div class="saved-search-item">
+                        <i class="fas fa-search"></i>
+                        <span>Recent objections</span>
+                        <button class="btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="saved-search-item">
+                        <i class="fas fa-search"></i>
+                        <span>Pending criminal cases</span>
+                        <button class="btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="saved-search-item">
+                        <i class="fas fa-search"></i>
+                        <span>My draft transcripts</span>
+                        <button class="btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="saved-search-item">
+                        <i class="fas fa-search"></i>
+                        <span>Susan Mwale hearings</span>
+                        <button class="btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Searches -->
+            <section class="recent-searches">
+                <h3><i class="fas fa-history"></i> Recent Searches</h3>
+                <div class="recent-search-list">
+                    <div class="recent-search-item">
+                        <span class="recent-search-query">motion to suppress</span>
+                        <span class="recent-search-time">2 hours ago</span>
+                    </div>
+                    <div class="recent-search-item">
+                        <span class="recent-search-query">witness testimony</span>
+                        <span class="recent-search-time">1 day ago</span>
+                    </div>
+                    <div class="recent-search-item">
+                        <span class="recent-search-query">exhibit marking</span>
+                        <span class="recent-search-time">2 days ago</span>
+                    </div>
+                    <div class="recent-search-item">
+                        <span class="recent-search-query">jury instructions</span>
+                        <span class="recent-search-time">3 days ago</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Save Search Modal -->
+    <div class="modal" id="saveSearchModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Save Search</h3>
+                <button class="modal-close" onclick="closeModal('saveSearchModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="searchName">Search Name</label>
+                    <input type="text" id="searchName" placeholder="e.g., Recent Objections" value="Objection hearings">
+                </div>
+                <div class="input-group">
+                    <label for="searchDescription">Description (Optional)</label>
+                    <textarea id="searchDescription" placeholder="Describe this saved search...">All transcripts containing objections from recent hearings</textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('saveSearchModal')">Cancel</button>
+                    <button class="btn-primary" onclick="confirmSaveSearch()">Save Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/search.js"></script>
+</body>
+</html>

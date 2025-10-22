@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCourt Reporters - Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <div class="user-menu">
+                    <button class="user-btn" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Court Reporter</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" id="darkModeToggle"><i class="fas fa-moon"></i> Dark Mode</a>
+                        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="dashboard.html" class="mobile-nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="transcription.html" class="mobile-nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+        <a href="transcripts.html" class="mobile-nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+        <a href="profile.html" class="mobile-nav-link"><i class="fas fa-user"></i> Profile</a>
+        <a href="settings.html" class="mobile-nav-link"><i class="fas fa-cog"></i> Settings</a>
+        <a href="../index.html" class="mobile-nav-link logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-header">
+                    <div>
+                        <h2>Welcome back, Court Reporter! 👋</h2>
+                        <p>Here's what's happening with your transcripts today</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn-primary" onclick="startNewTranscription()">
+                            <i class="fas fa-plus"></i> New Transcription
+                        </button>
+                        <button class="btn-secondary" onclick="location.href='transcripts.html'">
+                            <i class="fas fa-list"></i> View All
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Real-time Stats -->
+                <div class="real-time-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <span class="stat-value" id="currentTime">--:-- --</span>
+                            <span class="stat-label">Current Time</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-network-wired"></i>
+                        <div>
+                            <span class="stat-value" id="connectionStatus">Online</span>
+                            <span class="stat-label">Status</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enhanced Stats Grid -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Pending Review</h3>
+                        <p class="stat-number">5</p>
+                        <span class="stat-change">+2 today</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Completed Today</h3>
+                        <p class="stat-number">12</p>
+                        <span class="stat-change">+15%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Cases</h3>
+                        <p class="stat-number">47</p>
+                        <span class="stat-change">+8 this week</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon productivity">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Productivity</h3>
+                        <p class="stat-number">87%</p>
+                        <span class="stat-change">+5%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two Column Layout -->
+            <div class="dashboard-grid">
+                <!-- Recent Activity -->
+                <section class="recent-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                        <button class="btn-link">View All</button>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Transcript <strong>CR-2024-015</strong> completed</p>
+                                <span class="activity-time">2 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon warning">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Draft saved for <strong>CR-2024-016</strong></p>
+                                <span class="activity-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>New transcription started: <strong>CR-2024-017</strong></p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions Panel -->
+                <section class="actions-panel">
+                    <div class="section-header">
+                        <h3><i class="fas fa-rocket"></i> Quick Actions</h3>
+                    </div>
+                    <div class="action-grid">
+                        <button class="action-card" onclick="startNewTranscription()">
+                            <i class="fas fa-keyboard"></i>
+                            <span>New Transcription</span>
+                        </button>
+                        <button class="action-card" onclick="location.href='transcripts.html'">
+                            <i class="fas fa-search"></i>
+                            <span>Search Transcripts</span>
+                        </button>
+                        <button class="action-card" onclick="showKeyboardShortcuts()">
+                            <i class="fas fa-keyboard"></i>
+                            <span>Keyboard Shortcuts</span>
+                        </button>
+                        <button class="action-card">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Manage Templates</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Recent Transcripts -->
+            <section class="recent-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-file-alt"></i> Recent Transcripts</h3>
+                </div>
+                
+                <div class="transcript-list">
+                    <div class="transcript-item">
+                        <div class="case-info">
+                            <strong>Case #CR-2024-015</strong>
+                            <span>Susan Mwale vs. Sunday Siwale</span>
+                        </div>
+                        <div class="transcript-status completed">Completed</div>
+                        <button class="btn-view">View</button>
+                    </div>
+                    
+                    <div class="transcript-item">
+                        <div class="case-info">
+                            <strong>Case #CR-2024-016</strong>
+                            <span>Moses vs. Susan</span>
+                        </div>
+                        <div class="transcript-status pending">Draft</div>
+                        <button class="btn-edit">Edit</button>
+                    </div>
+                    
+                    <div class="transcript-item">
+                        <div class="case-info">
+                            <strong>Case #CR-2024-017</strong>
+                            <span>Gilbert vs. Williams</span>
+                        </div>
+                        <div class="transcript-status in-progress">In Progress</div>
+                        <button class="btn-edit">Continue</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="startNewTranscription()">
+                        Start New Transcription
+                    </button>
+                    <button class="btn-secondary" onclick="location.href='transcripts.html'">
+                        View All Transcripts
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal" id="shortcutsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Keyboard Shortcuts</h3>
+                <button class="modal-close" onclick="closeModal('shortcutsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + N</kbd>
+                        <span>New Transcription</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + S</kbd>
+                        <span>Save Draft</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + Shift + S</kbd>
+                        <span>Save Final</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + B</kbd>
+                        <span>Bold Text</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + I</kbd>
+                        <span>Italic Text</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl + Space</kbd>
+                        <span>Voice Dictation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="notificationToast">
+        <div class="toast-content">
+            <i class="fas fa-bell"></i>
+            <span id="toastMessage">Notification message</span>
+        </div>
+        <button class="toast-close" onclick="hideToast()">&times;</button>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

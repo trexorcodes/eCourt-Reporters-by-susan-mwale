@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCourt Reporters - All Transcripts</title>
+    <!-- Fix CSS paths -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="transcription.html" class="nav-link">Transcription</a>
+                <a href="transcripts.html" class="nav-link active">All Transcripts</a>
+                <a href="../index.html" class="nav-link logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="welcome-section">
+                <h2>All Transcripts</h2>
+                <p>Manage and view all your court transcripts</p>
+            </section>
+
+            <section class="transcripts-section">
+                <div class="transcript-filters">
+                    <input type="text" id="searchTranscripts" placeholder="Search transcripts...">
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="final">Final</option>
+                    </select>
+                </div>
+
+                <div class="transcripts-list" id="transcriptsList">
+                    <!-- Transcript items will be loaded here by JavaScript -->
+                    <div class="no-transcripts">
+                        <p>No transcripts found. <a href="transcription.html">Create your first transcript</a></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/transcripts.js"></script>
+</body>
+</html>

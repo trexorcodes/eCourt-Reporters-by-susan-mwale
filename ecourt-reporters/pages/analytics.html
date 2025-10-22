@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - eCourt Reporters</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> eCourt Reporters</h1>
+            </div>
+            <nav class="navigation">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="transcription.html" class="nav-link"><i class="fas fa-keyboard"></i> Transcription</a>
+                <a href="transcripts.html" class="nav-link"><i class="fas fa-folder"></i> All Transcripts</a>
+                <a href="analytics.html" class="nav-link active"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <div class="user-menu">
+                    <button class="user-btn" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Court Reporter</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" id="darkModeToggle"><i class="fas fa-moon"></i> Dark Mode</a>
+                        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Analytics Header -->
+            <section class="analytics-header">
+                <div class="header-left">
+                    <h2><i class="fas fa-chart-bar"></i> Analytics Dashboard</h2>
+                    <p>Comprehensive insights into your transcription performance and productivity</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-filter">
+                        <select id="timeRange">
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d" selected>Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="1y">Last Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="exportAnalytics()">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+            </section>
+
+            <!-- Key Metrics -->
+            <section class="metrics-grid">
+                <div class="metric-card primary">
+                    <div class="metric-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Total Transcripts</h3>
+                        <div class="metric-value">147</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% increase</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card success">
+                    <div class="metric-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Completion Rate</h3>
+                        <div class="metric-value">94%</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3% improvement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card warning">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Avg. Time per Case</h3>
+                        <div class="metric-value">2h 18m</div>
+                        <div class="metric-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>8% faster</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card info">
+                    <div class="metric-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3>Productivity Score</h3>
+                        <div class="metric-value">88/100</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5 points up</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <!-- Transcripts Over Time -->
+                <section class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-line"></i> Transcripts Over Time</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item">
+                                <span class="legend-color completed"></span>
+                                Completed
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-color draft"></span>
+                                Draft
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="transcriptsChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Case Type Distribution -->
+                <section class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-pie"></i> Case Type Distribution</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="caseTypeChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Productivity Trends -->
+                <section class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-trending-up"></i> Productivity Trends</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Word Count Distribution -->
+                <section class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-bar"></i> Word Count Distribution</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="wordCountChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Detailed Analytics -->
+            <div class="analytics-details">
+                <!-- Performance Metrics -->
+                <section class="detail-card">
+                    <div class="detail-header">
+                        <h3><i class="fas fa-tachometer-alt"></i> Performance Metrics</h3>
+                    </div>
+                    <div class="detail-content">
+                        <div class="metrics-table">
+                            <div class="metric-row">
+                                <span class="metric-label">Average Words per Hour</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="metric-value">1,250</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Accuracy Rate</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 92%"></div>
+                                </div>
+                                <span class="metric-value">92%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">On-time Completion</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 88%"></div>
+                                </div>
+                                <span class="metric-value">88%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Client Satisfaction</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 96%"></div>
+                                </div>
+                                <span class="metric-value">96%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="detail-card">
+                    <div class="detail-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity Timeline</h3>
+                    </div>
+                    <div class="detail-content">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker success"></div>
+                                <div class="timeline-content">
+                                    <p>Completed transcript for <strong>CR-2024-025</strong></p>
+                                    <span class="timeline-time">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker warning"></div>
+                                <div class="timeline-content">
+                                    <p>Started new transcription: <strong>CR-2024-026</strong></p>
+                                    <span class="timeline-time">4 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker info"></div>
+                                <div class="timeline-content">
+                                    <p>Saved draft for <strong>CR-2024-024</strong></p>
+                                    <span class="timeline-time">1 day ago</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker success"></div>
+                                <div class="timeline-content">
+                                    <p>Exported final transcript: <strong>CR-2024-023</strong></p>
+                                    <span class="timeline-time">2 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Comparison Section -->
+            <section class="comparison-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-balance-scale"></i> Performance Comparison</h3>
+                    <div class="comparison-toggle">
+                        <button class="toggle-btn active" data-period="monthly">Monthly</button>
+                        <button class="toggle-btn" data-period="quarterly">Quarterly</button>
+                        <button class="toggle-btn" data-period="yearly">Yearly</button>
+                    </div>
+                </div>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>Your Performance</h4>
+                        <div class="comparison-stats">
+                            <div class="stat">
+                                <span class="stat-value">147</span>
+                                <span class="stat-label">Transcripts</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">94%</span>
+                                <span class="stat-label">Completion</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">2h 18m</span>
+                                <span class="stat-label">Avg. Time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>Team Average</h4>
+                        <div class="comparison-stats">
+                            <div class="stat">
+                                <span class="stat-value">132</span>
+                                <span class="stat-label">Transcripts</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">89%</span>
+                                <span class="stat-label">Completion</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">2h 45m</span>
+                                <span class="stat-label">Avg. Time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>Top Performer</h4>
+                        <div class="comparison-stats">
+                            <div class="stat">
+                                <span class="stat-value">168</span>
+                                <span class="stat-label">Transcripts</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">96%</span>
+                                <span class="stat-label">Completion</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">2h 05m</span>
+                                <span class="stat-label">Avg. Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportAnalyticsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Analytics Report</h3>
+                <button class="modal-close" onclick="closeModal('exportAnalyticsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-option">
+                        <input type="radio" id="export-pdf-report" name="export-report" value="pdf" checked>
+                        <label for="export-pdf-report">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF Report</span>
+                            <small>Complete analytics report</small>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <input type="radio" id="export-csv-data" name="export-report" value="csv">
+                        <label for="export-csv-data">
+                            <i class="fas fa-file-csv"></i>
+                            <span>CSV Data</span>
+                            <small>Raw data for analysis</small>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <input type="radio" id="export-charts" name="export-report" value="charts">
+                        <label for="export-charts">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Charts Only</span>
+                            <small>High-quality chart images</small>
+                        </label>
+                    </div>
+                </div>
+                <div class="export-actions">
+                    <button class="btn-secondary" onclick="closeModal('exportAnalyticsModal')">Cancel</button>
+                    <button class="btn-primary" onclick="generateReport()">Generate Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/analytics.js"></script>
+</body>
+</html>
